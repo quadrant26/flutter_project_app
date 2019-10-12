@@ -1,5 +1,5 @@
 // 卡片类型
-import 'package:flutter_trip/mdel/common_model.dart';
+import 'package:flutter_trip/model/common_model.dart';
 
 class GridNavModel{
   final GridNavItem hotel;
@@ -8,11 +8,11 @@ class GridNavModel{
 
   GridNavModel({this.hotel, this.flight, this.travel});
 
-  factory GridNavModel.formJson(Map<String, dynamic> json){
+  factory GridNavModel.fromJson(Map<String, dynamic> json){
     return json != null ? GridNavModel(
-      hotel: GridNavItem.formJson(json['hotel']),
-      flight: GridNavItem.formJson(json['flight']),
-      travel: GridNavItem.formJson(json['travel'])
+      hotel: GridNavItem.fromJson(json['hotel']),
+      flight: GridNavItem.fromJson(json['flight']),
+      travel: GridNavItem.fromJson(json['travel'])
     ) : null;
   }
 }
@@ -35,7 +35,7 @@ class GridNavItem{
 
   GridNavItem({this.startColor, this.endColor, this.mainItem, this.item1, this.item2, this.item3, this.item4});
 
-  factory GridNavItem.formJson(Map<String, dynamic> json){
+  factory GridNavItem.fromJson(Map<String, dynamic> json){
     return GridNavItem(
       startColor: json['startColor'],
       endColor: json['endColor'],

@@ -8,7 +8,7 @@ class CommonModel{
 
   CommonModel({this.icon, this.title, this.url, this.statusBarColor, this.hideAppBar});
 
-  factory CommonModel.formJson(Map<String, dynamic> json){
+  factory CommonModel.fromJson(Map<String, dynamic> json){
     return CommonModel(
       icon: json['icon'],
       title: json['title'],
