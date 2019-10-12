@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip/dao/home_dao.dart';
+import 'package:flutter_trip/model/common_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
+import 'package:flutter_trip/widget/local_nav.dart';
 
 // 设置最大滚动距离
 const APPBAR_SCROLL_OFFSET = 100;
@@ -22,13 +24,15 @@ class _HomePageState extends State<HomePage> {
   );
 
   List _imageUrls = [
-    'http://b.hiphotos.baidu.com/image/pic/item/0eb30f2442a7d9337119f7dba74bd11372f001e0.jpg',
-    'http://a.hiphotos.baidu.com/image/pic/item/9a504fc2d5628535bdaac29e9aef76c6a6ef63c2.jpg',
-    'http://g.hiphotos.baidu.com/image/pic/item/21a4462309f7905296a7578106f3d7ca7acbd5d0.jpg'
+    'http://www.devio.org/io/flutter_app/img/banner/100h10000000q7ght9352.jpg',
+    'https://dimg04.c-ctrip.com/images/300h0u000000j05rnD96B_C_500_280.jpg',
+    'http://pages.ctrip.com/hotel/201811/jdsc_640es_tab1.jpg',
+    'https://dimg03.c-ctrip.com/images/fd/tg/g1/M03/7E/19/CghzfVWw6OaACaJXABqNWv6ecpw824_C_500_280_Q90.jpg',
   ];
   double _appBarAlpha = 0; // appbar 透明度设置
 
   String resultString = "";
+  List<CommonModel> localNavList;
 
   @override
   void initState() {
@@ -67,7 +71,8 @@ class _HomePageState extends State<HomePage> {
       HomeModel model = await HomeDao.fetch();
 
       setState(() {
-        resultString = json.encode(model);
+        // resultString = json.encode(model);
+        localNavList = model.localNavList;
       });
     } catch(e){
       setState(() {
@@ -81,6 +86,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Color(0Xfff2f2f2),
       body: Stack(
         children: <Widget>[
           MediaQuery.removePadding(
@@ -108,6 +114,10 @@ class _HomePageState extends State<HomePage> {
                       },
                       pagination: SwiperPagination(),
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
+                    child: LocalNav(localNavList: localNavList),
                   ),
                   Container(
                     height: 800,
