@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_trip/dao/home_dao.dart';
+import 'package:flutter_trip/model/home_model.dart';
 
 // 设置最大滚动距离
 const APPBAR_SCROLL_OFFSET = 100;
@@ -24,6 +28,14 @@ class _HomePageState extends State<HomePage> {
   ];
   double _appBarAlpha = 0; // appbar 透明度设置
 
+  String resultString = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
   _onScroll(offset){
     // 利用滚动的距离来计算 透明度的值
     double alpha = offset/APPBAR_SCROLL_OFFSET;
@@ -36,6 +48,33 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _appBarAlpha = alpha;
     });
+  }
+
+//  loadData (){
+//    HomeDao.fetch().then( (result){
+//      setState(() {
+//        resultString = json.encode(result);
+//      });
+//    }).catchError((e){
+//      setState(() {
+//        resultString = e.toString();
+//      });
+//    });
+//  }
+
+  loadData () async {
+    try{
+      HomeModel model = await HomeDao.fetch();
+
+      setState(() {
+        resultString = json.encode(model);
+      });
+    } catch(e){
+      setState(() {
+        resultString = e.toString();
+      });
+    }
+
   }
 
   @override
@@ -73,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: 800,
                     child: ListTile(
-                        title: Text('哈哈')
+                        title: Text(resultString)
                     ),
                   )
                 ],
