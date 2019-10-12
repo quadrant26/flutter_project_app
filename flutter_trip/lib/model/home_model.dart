@@ -18,19 +18,43 @@ class HomeModel{
 
     var localNavListJson = json['localNavList'] as List;
     List<CommonModel> localNavList = localNavListJson.map( (i) => CommonModel.fromJson(i)).toList();
-    var bannerListJson = json['localNavList'] as List;
+    var bannerListJson = json['bannerList'] as List;
     List<CommonModel> bannerList = bannerListJson.map( (i) => CommonModel.fromJson(i)).toList();
-    var subNavListJson = json['localNavList'] as List;
+    var subNavListJson = json['subNavList'] as List;
     List<CommonModel> subNavList = subNavListJson.map( (i) => CommonModel.fromJson(i)).toList();
 
 
     return HomeModel(
       config: ConfigModel.fromJson(json['config']),
       bannerList: bannerList,
-      localNavList: localNavListJson,
+      localNavList: localNavList,
       subNavList: subNavList,
       gridNav: GridNavModel.fromJson(json['gridNav']),
       salesBox: SalesBoxModel.fromJson(json['salesBox']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if ( data['config'] != null){
+      data['config'] = this.config.toJson();
+    }
+    if ( data['bannerList'] != null){
+      data['bannerList'] = this.bannerList.map((v) => v.toJson()).toList();
+    }
+    if ( data['localNavList'] != null){
+      data['localNavList'] = this.localNavList.map((v) => v.toJson()).toList();
+    }
+    if ( data['subNavList'] != null){
+      data['subNavList'] = this.subNavList.map((v) => v.toJson()).toList();
+    }
+    if ( data['gridNav'] != null){
+      data['gridNav'] = this.gridNav.toJson();
+    }
+    if ( data['salesBox'] != null){
+      data['salesBox'] = this.salesBox.toJson();
+    }
+    return data;
+  }
+
 }
