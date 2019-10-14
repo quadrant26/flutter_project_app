@@ -3,15 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+// 配置页面白名单
+const CATCH_URLS = ['m.ctrip.com/', 'm.ctrip.com/html5/', 'm.ctrip.com/html5'];
+
 class WebView extends StatefulWidget {
 
-  final String icon;
   final String title;
   final String url;
   final String statusBarColor;
   final bool hideAppBar;
+  final bool backForbid;
 
-  const WebView({Key key, this.icon, this.title, this.url, this.statusBarColor, this.hideAppBar}) : super(key: key);
+  // 设置 backForbid 默认值
+  const WebView({Key key, this.title, this.url, this.statusBarColor, this.hideAppBar, this.backForbid = false}) : super(key: key);
 
   @override
   _WebViewState createState() => _WebViewState();
@@ -23,6 +27,7 @@ class _WebViewState extends State<WebView>{
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   StreamSubscription<WebViewHttpError> _onHttpError;
+  bool exiting = false;
 
   @override
   void initState() {
@@ -37,7 +42,18 @@ class _WebViewState extends State<WebView>{
     _onStateChanged = webviewReference.onStateChanged.listen( (WebViewStateChanged state){
       switch(state.type){
         case WebViewState.startLoad:
-
+          // 判断是否 url 存在
+          if( _isMain(state.url) && !exiting){
+            // 是否禁止返回
+            if( widget.backForbid ){
+              // 重新打开页面
+              webviewReference.launch(widget.url);
+            }else{
+              // 返回上一页
+              Navigator.pop(context);
+              exiting = true;
+            }
+          }
           break;
         default:
           break;
@@ -47,6 +63,19 @@ class _WebViewState extends State<WebView>{
     _onHttpError = webviewReference.onHttpError.listen( (WebViewHttpError error){
       print(error);
     });
+  }
+
+  _isMain(String url){
+    bool contain = false;
+    for( final value in CATCH_URLS){
+      // url 存在才 endWith ?.
+      // ?? 前面是真返回这个值，否则返回 false
+      if( url?.endsWith(value) ?? false){
+        contain = true;
+        break;
+      }
+    }
+    return contain;
   }
 
   @override
