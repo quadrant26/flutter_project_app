@@ -6,8 +6,10 @@ import 'package:flutter_trip/dao/home_dao.dart';
 import 'package:flutter_trip/model/common_model.dart';
 import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
+import 'package:flutter_trip/model/sales_box_model.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
+import 'package:flutter_trip/widget/sales_box.dart';
 import 'package:flutter_trip/widget/sub_nav.dart';
 
 // 设置最大滚动距离
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   List<CommonModel> localNavList;
   GridNavModel gridNavModel;
   List<CommonModel> subNavList;
+  SalesBoxModel salesBoxList;
 
   @override
   void initState() {
@@ -79,6 +82,7 @@ class _HomePageState extends State<HomePage> {
         localNavList = model.localNavList;
         gridNavModel = model.gridNav;
         subNavList = model.subNavList;
+        salesBoxList = model.salesBox;
         resultString = 'resultString'; //json.encode(subNavList);
       });
     } catch(e){
@@ -133,6 +137,10 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
                     child: SubNav(subNavList: subNavList),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                    child: SalesBox(salesBoxList: salesBoxList),
                   ),
                   Container(
                     height: 800,
