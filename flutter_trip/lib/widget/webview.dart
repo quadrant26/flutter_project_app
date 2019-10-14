@@ -81,11 +81,11 @@ class _WebViewState extends State<WebView>{
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     _onHttpError.cancel();
     webviewReference.dispose();
+    super.dispose();
   }
 
   @override
@@ -132,11 +132,18 @@ class _WebViewState extends State<WebView>{
       );
     }
     return Container(
+      // 使用 padding 针对 webview ios刘海屏 返回按钮被遮挡的问题
+      // 安卓不需要使用， 除非是刘海屏
+      // padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
+      color: backButtonColor,
       child: FractionallySizedBox(
         widthFactor: 1,
         child: Stack(
           children: <Widget>[
             GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
               child: Container(
                 margin: EdgeInsets.only(left: 10),
                 child: Icon(
