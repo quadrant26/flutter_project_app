@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip/dao/home_dao.dart';
 import 'package:flutter_trip/model/common_model.dart';
+import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
+import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
 
 // 设置最大滚动距离
@@ -33,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   String resultString = "";
   List<CommonModel> localNavList;
+  GridNavModel gridNavModel;
 
   @override
   void initState() {
@@ -73,6 +76,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         // resultString = json.encode(model);
         localNavList = model.localNavList;
+        gridNavModel = model.gridNav;
       });
     } catch(e){
       setState(() {
@@ -118,6 +122,10 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
                     child: LocalNav(localNavList: localNavList),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                    child: GridNav(gridNavModel: gridNavModel),
                   ),
                   Container(
                     height: 800,
