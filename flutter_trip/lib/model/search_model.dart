@@ -4,6 +4,8 @@ const URL = 'https://m.ctrip.com/restapi/h5api/searchapp/search?source=mobileweb
 class SearchModel{
   final List<SearchItem> data;
 
+  String keyword;
+
   SearchModel({this.data});
 
   factory SearchModel.fromJson(Map<String, dynamic> json){
@@ -13,8 +15,6 @@ class SearchModel{
     return SearchModel(data: data);
   }
 }
-
-
 
 class SearchItem {
   String word;
