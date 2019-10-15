@@ -6,6 +6,22 @@ import 'package:flutter_trip/widget/webview.dart';
 
 const URL = 'https://m.ctrip.com/restapi/h5api/searchapp/search?source=mobileweb&action=autocomplete&contentType=json&keyword=';
 
+const TYPES = [
+  'channelgroup',
+  'gs',
+  'plane',
+  'train',
+  'cruise',
+  'district',
+  'food',
+  'hotel',
+  'huodong',
+  'shop',
+  'sight',
+  'ticket',
+  'travelgroup'
+];
+
 class SearchPage extends StatefulWidget{
 
   final bool hideLeft;
@@ -102,6 +118,14 @@ class _SearchPageState extends State<SearchPage>{
         ),
         child: Row(
           children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(1),
+              child: Image(
+                width: 26,
+                height: 26,
+                image: AssetImage(_typeImage(item.type))
+              ),
+            ),
             Column(
               children: <Widget>[
                 Container(
@@ -118,6 +142,19 @@ class _SearchPageState extends State<SearchPage>{
         ),
       ),
     );
+  }
+
+  _typeImage (String type){
+    if(type == null)return 'images/type_travelgroup.png';
+    String path = 'travelgroup';
+
+    for( final val in TYPES){
+      if( type.contains(val)){
+        path = val;
+        break;
+      }
+    }
+    return 'images/type_$path.png';
   }
 
   _onTextChange (text){
