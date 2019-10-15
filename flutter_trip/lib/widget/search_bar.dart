@@ -18,7 +18,19 @@ class SearchBar extends StatefulWidget {
 
   final ValueChanged<String> onChanged;
 
-  const SearchBar({Key key, this.enabled, this.hideLeft, this.searchBarType, this.hint, this.defaultText, this.leftButtonClick, this.rightButtonClick, this.speakClick, this.inputBoxClick, this.onChanged}) : super(key: key);
+  const SearchBar(
+      {Key key,
+      this.enabled = true,
+      this.hideLeft,
+      this.searchBarType = SearchBarType.normal,
+      this.hint,
+      this.defaultText,
+      this.leftButtonClick,
+      this.rightButtonClick,
+      this.speakClick,
+      this.inputBoxClick,
+      this.onChanged})
+      : super(key: key);
 
   @override
   _SearchBarState createState() => _SearchBarState();
@@ -53,6 +65,7 @@ class _SearchBarState extends State<SearchBar>{
         children: <Widget>[
           _warpTap(
             Container(
+              padding: EdgeInsets.fromLTRB(6, 5, 10, 5),
               child: widget?.hideLeft ?? false ? null : Icon(
                   Icons.arrow_back_ios,
                   color: Colors.grey,
@@ -71,7 +84,7 @@ class _SearchBarState extends State<SearchBar>{
                 child: Text(
                   '搜索',
                   style: TextStyle(color: Colors.blue, fontSize: 12)
-                ),
+                )
               ),
               widget.rightButtonClick
           ),
@@ -81,7 +94,46 @@ class _SearchBarState extends State<SearchBar>{
   }
 
   _genHomeSearch (){
-
+    return Container(
+      child: Row(
+        children: <Widget>[
+          _warpTap(
+              Container(
+                padding: EdgeInsets.fromLTRB(6, 5, 5, 5),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      '上海',
+                      style: TextStyle(color: _homeFontColor(), fontSize: 14)
+                    ),
+                    Icon(
+                      Icons.expand_more,
+                      color: _homeFontColor(),
+                      size: 22,
+                    )
+                  ],
+                )
+              ),
+              widget.leftButtonClick
+          ),
+          Expanded(
+            flex: 1,
+            child: _inputBox(),
+          ),
+          _warpTap(
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: Icon(
+                  Icons.comment,
+                  color: _homeFontColor(),
+                  size: 26,
+                )
+              ),
+              widget.rightButtonClick
+          ),
+        ],
+      ),
+    );
   }
 
   _inputBox (){
@@ -93,6 +145,14 @@ class _SearchBarState extends State<SearchBar>{
     }
 
     return Container(
+      height: 30,
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      decoration: BoxDecoration(
+          color: inputBoxColor,
+          borderRadius: BorderRadius.circular(
+            widget.searchBarType == SearchBarType.normal ? 5 : 15
+          )
+      ),
       child: Row(
         children: <Widget>[
           Icon(
@@ -129,7 +189,26 @@ class _SearchBarState extends State<SearchBar>{
               ),
               widget.inputBoxClick
             ),
-          )
+          ),
+          !showClear ? _warpTap(Icon(
+            Icons.mic,
+            size: 22,
+            color: widget.searchBarType == SearchBarType.normal ? Colors.blue : Colors.grey,
+          ), widget.speakClick)
+            : _warpTap(
+            Icon(
+              Icons.clear,
+              size: 22,
+              color: Colors.grey,
+            ),
+              (){
+              // 点击执行清空内容
+                setState(() {
+                  _controller.clear();
+                });
+                _onChanged('');
+              }
+          ),
         ],
       ),
     );
@@ -159,6 +238,10 @@ class _SearchBarState extends State<SearchBar>{
     if( widget.onChanged != null){
       widget.onChanged(text);
     }
+  }
+
+  _homeFontColor (){
+    return widget.searchBarType == SearchBarType.homeLight ? Colors.black54 : Colors.white;
   }
 
 }
